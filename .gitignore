@@ -1,0 +1,159 @@
+
+# ==========================================
+# PYTHON
+# ==========================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Compilación y distribución
+build/
+dist/
+downloads/
+.eggs/
+*.egg-info/
+.eggs/
+wheels/
+pip-wheel-metadata/
+
+# ==========================================
+# ENTORNOS VIRTUALES
+# ==========================================
+
+venv/
+.venv/
+env/
+ENV/
+virtualenv/
+.python-version
+
+# ==========================================
+# VARIABLES DE ENTORNO Y SECRETOS
+# ==========================================
+
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Claves y certificados
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+# ==========================================
+# FASTAPI / SERVIDOR
+# ==========================================
+
+# Logs
+*.log
+logs/
+
+# Archivos temporales del servidor
+.tmp/
+.temp/
+
+# ==========================================
+# BASES DE DATOS
+# ==========================================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups
+*.bak
+*.dump
+*.sql.gz
+
+# ==========================================
+# TESTING Y COBERTURA
+# ==========================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+coverage.xml
+nosetests.xml
+test-results/
+
+# ==========================================
+# TYPE CHECKING / LINTING
+# ==========================================
+
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+.pyright/
+
+# ==========================================
+# IDE Y EDITORES
+# ==========================================
+
+# Visual Studio Code
+.vscode/
+
+# PyCharm / IntelliJ
+.idea/
+
+# Sublime Text
+*.sublime-workspace
+
+# ==========================================
+# SISTEMA OPERATIVO
+# ==========================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ==========================================
+# JUPYTER NOTEBOOKS
+# ==========================================
+
+.ipynb_checkpoints/
+
+# ==========================================
+# DOCKER
+# ==========================================
+
+# Archivos locales de configuración
+docker-compose.override.yml
+
+# ==========================================
+# DOCUMENTACIÓN GENERADA
+# ==========================================
+
+site/
+docs/_build/
+
+# ==========================================
+# ARCHIVOS TEMPORALES
+# ==========================================
+
+*.swp
+*.swo
+*.tmp
+*.temp
+*.orig
+*.rej
