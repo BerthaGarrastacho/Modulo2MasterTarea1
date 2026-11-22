@@ -225,7 +225,7 @@ DB_PORT=3307
 | `DB_NAME` | Nombre de la base de datos, por ejemplo `user-ph` | Sí |
 | `DB_PORT` | Puerto de MySQL, por ejemplo `3306` o `3307` | Sí |
 
-La base de datos debe contener una tabla llamada `photographers` con las columnas `id`,
+La base de datos debe contener una tabla llamada `users` con las columnas `id`,
 `name`, `username` y `email`.
 
 ### 5.4. Ejecución del proyecto
@@ -247,10 +247,10 @@ puede consultarse en `http://127.0.0.1:5000/docs`.
 | ID | Funcionalidad | Descripción | Estado |
 |---|---|---|---|
 | F-01 | Página principal | Presenta un encabezado, descripción e icono de cámara desde la ruta `/`. | Completada |
-| F-02 | Consulta de fotógrafos | Permite obtener todos los registros almacenados mediante `GET /photograpers`. | Completada |
-| F-03 | Registro de fotógrafos | Permite insertar nombre, nombre de usuario y correo mediante `POST /photograpers`. | Completada |
-| F-04 | Actualización de fotógrafos | Permite modificar uno o varios datos mediante `PUT /photograpers/{id}`. | Completada |
-| F-05 | Eliminación de fotógrafos | Permite eliminar un registro mediante `DELETE /photograpers/{id}`. | Completada |
+| F-02 | Consulta de fotógrafos | Permite obtener todos los registros almacenados mediante `GET /users`. | Completada |
+| F-03 | Registro de fotógrafos | Permite insertar nombre, nombre de usuario y correo mediante `POST /users`. | Completada |
+| F-04 | Actualización de fotógrafos | Permite modificar uno o varios datos mediante `PUT /users/{id}`. | Completada |
+| F-05 | Eliminación de fotógrafos | Permite eliminar un registro mediante `DELETE /users/{id}`. | Completada |
 | F-06 | Gestión de preferencias de Twitch | Conectar preferencias de fotógrafos con los recursos de Twitch. | Pendiente |
 
 ### 6.2. Descripción de los componentes principales
@@ -276,15 +276,15 @@ puede consultarse en `http://127.0.0.1:5000/docs`.
 | Método | Endpoint | Descripción | Parámetros |
 |---|---|---|---|
 | GET | `/` | Devuelve la página HTML principal. | Ninguno |
-| GET | `/photograpers` | Lista todos los fotógrafos registrados. | Ninguno |
-| POST | `/photograpers` | Agrega un fotógrafo. | `name`, `username`, `email` |
-| PUT | `/photograpers/{userph_id}` | Actualiza los campos enviados de un fotógrafo. | `userph_id` y campos opcionales |
-| DELETE | `/photograpers/{userph_id}` | Elimina un fotógrafo por identificador. | `userph_id` |
+| GET | `/users` | Lista todos los fotógrafos registrados. | Ninguno |
+| POST | `/users` | Agrega un fotógrafo. | `name`, `username`, `email` |
+| PUT | `/users/{userph_id}` | Actualiza los campos enviados de un fotógrafo. | `userph_id` y campos opcionales |
+| DELETE | `/users/{userph_id}` | Elimina un fotógrafo por identificador. | `userph_id` |
 | GET | `/docs` | Muestra la documentación interactiva Swagger. | Ninguno |
 
 ### 6.4. Modelo de datos
 
-La base de datos `user-ph` contiene inicialmente la entidad `photographers`. Cada fotógrafo
+La base de datos `user-ph` contiene inicialmente la entidad `users`. Cada fotógrafo
 se identifica mediante un campo `id` único y se registran su nombre, nombre de usuario y correo.
 
 | Columna | Tipo sugerido | Restricción |
@@ -296,7 +296,7 @@ se identifica mediante un campo `id` único y se registran su nombre, nombre de 
 
 ```mermaid
 erDiagram
-    PHOTOGRAPHERS {
+    USERS {
         int id PK
         varchar name
         varchar username
@@ -323,10 +323,10 @@ Las pruebas principales se realizaron manualmente desde Swagger UI y Postman.
 
 | ID | Prueba | Resultado esperado | Resultado obtenido | Estado |
 |---|---|---|---|---|
-| T-01 | `GET /photograpers` | Devuelve la lista de fotógrafos almacenados. | Pendiente de registro formal | Por ejecutar |
-| T-02 | `POST /photograpers` | Inserta el registro y devuelve el identificador creado. | Se realizó correctamente después de ajustar las credenciales. | Completada |
-| T-03 | `PUT /photograpers/{id}` | Actualiza únicamente los campos enviados y conserva los demás. | Implementada; requiere validación final. | Por validar |
-| T-04 | `DELETE /photograpers/{id}` | Elimina el registro y devuelve confirmación. | Implementada con parámetros seguros. | Por validar |
+| T-01 | `GET /users` | Devuelve la lista de fotógrafos almacenados. | Pendiente de registro formal | Por ejecutar |
+| T-02 | `POST /users` | Inserta el registro y devuelve el identificador creado. | Se realizó correctamente después de ajustar las credenciales. | Completada |
+| T-03 | `PUT /users/{id}` | Actualiza únicamente los campos enviados y conserva los demás. | Implementada; requiere validación final. | Por validar |
+| T-04 | `DELETE /users/{id}` | Elimina el registro y devuelve confirmación. | Implementada con parámetros seguros. | Por validar |
 | T-05 | Uso de credenciales incorrectas | La API debe evitar fallos silenciosos y registrar el motivo del error. | Se detectó una denegación de acceso con MySQL. | Completada |
 
 ---
@@ -365,7 +365,7 @@ Las pruebas principales se realizaron manualmente desde Swagger UI y Postman.
 | ID | Mejora propuesta | Prioridad | Complejidad | Estado |
 |---|---|---|---|---|
 | M-01 | Agregar autenticación mediante API key o JWT | Alta | Media | Pendiente |
-| M-02 | Implementar paginación en `GET /photograpers` | Media | Baja | Pendiente |
+| M-02 | Implementar paginación en `GET /users` | Media | Baja | Pendiente |
 | M-03 | Agregar filtros por nombre, usuario o correo | Media | Baja | Pendiente |
 | M-06 | Integrar preferencias y datos desde la API de Twitch | Alta | Alta | Pendiente |
 
