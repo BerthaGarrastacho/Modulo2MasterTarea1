@@ -74,6 +74,7 @@ def get_Home():
 #CRUD GET USER Logic
 async def getUsers(myphBD: DatabaseConnection): 
     users_with_games = await database.get_user_with_games(myphBD)
+    users_with_channels = await database.get_user_with_channels(myphBD)
     usuarios = {}
     for row in users_with_games:
         usuario = usuarios.setdefault(row["id"], {
@@ -82,10 +83,15 @@ async def getUsers(myphBD: DatabaseConnection):
             "username": row["username"],
             "email": row["email"],
             "games": [],
+            "channels": [],
         })
         if row["game_id"] is not None:
             usuario["games"].append({"id": row["game_id"], "name": row["game_name"]})
-            
+
+    for row in users_with_channels:
+        if row["id"] in usuarios and row["channel_id"] is not None:
+            usuarios[row["id"]]["channels"].append({"id": row["channel_id"], "name": row["channel_name"]})
+
     return list(usuarios.values())
  
 #CRUD POST USER Logic    

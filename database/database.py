@@ -17,6 +17,21 @@ async def get_user_with_games(myphBD: DatabaseConnection):
     mycursor.close()
     return users_with_games
 
+async def get_user_with_channels(myphBD: DatabaseConnection):
+    mydbConnection = await myphBD.get_db_connection()
+    mycursor = mydbConnection.cursor(dictionary=True)
+    getQuery = """
+    SELECT u.id, c.id AS channel_id, c.name AS channel_name
+    FROM users u
+    LEFT JOIN user_channels uc ON uc.user_id = u.id
+    LEFT JOIN channels c ON c.id = uc.channel_id
+    ORDER BY u.id
+    """
+    mycursor.execute(getQuery)
+    users_with_channels = mycursor.fetchall()
+    mycursor.close()
+    return users_with_channels
+
 async def insert_users(myphBD: DatabaseConnection, usuario: User):
     mydbConnection = await myphBD.get_db_connection()
     mycursor = mydbConnection.cursor()
@@ -37,7 +52,6 @@ async def update_user(myphBD: DatabaseConnection, userph_id: int, campos_actuali
     mycursor.execute(updQuery, values)
     mydbConnection.commit()
     mycursor.close()
-
 
 async def find_id_user(myphBD: DatabaseConnection, userph_id: int):
     mydbConnection = await myphBD.get_db_connection()
