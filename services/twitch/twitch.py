@@ -32,6 +32,23 @@ async def get_top_streams_in_game(game: str):
     await twitch.close()
     return streams
 
+async def get_top_channels_on_live(logins: list[str]):
+    live = []
+    if not logins:
+        return live
+
+    twitch_client = await Twitch(CLIENT_ID, CLIENT_SECRET)
+    # la API de Twitch acepta hasta 100 logins por consulta
+    for i in range(0, len(logins), 100):
+        async for stream in twitch_client.get_streams(user_login=logins[i:i + 100]):
+            live.append({
+                "channel": stream.user_login,
+                "title": stream.title,
+                "game": stream.game_name,
+                "viewers": stream.viewer_count,
+            })
+    await twitch_client.close()
+    return live
 
 async def main():
     twitch = await Twitch(CLIENT_ID, CLIENT_SECRET)  
@@ -51,6 +68,7 @@ async def main():
     print("Top live streams in Just Chatting:")
     async for s in twitch.get_streams(game_id=["509658"], first=5):
         print(s.user_name, s.viewer_count)
+
 
     await twitch.close()
 
