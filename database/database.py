@@ -32,6 +32,44 @@ async def get_user_with_channels(myphBD: DatabaseConnection):
     mycursor.close()
     return users_with_channels
 
+async def find_user_by_id(myphBD: DatabaseConnection, userph_id: int):
+    mydbConnection = await myphBD.get_db_connection()
+    mycursor = mydbConnection.cursor(dictionary=True)
+    mycursor.execute("SELECT id, name, username, email FROM users WHERE id = %s", (userph_id,))
+    user = mycursor.fetchone()
+    mycursor.close()
+    return user
+
+async def get_games_by_user_id(myphBD: DatabaseConnection, userph_id: int):
+    mydbConnection = await myphBD.get_db_connection()
+    mycursor = mydbConnection.cursor(dictionary=True)
+    getQuery = """
+    SELECT g.id, g.name
+    FROM user_games ug
+    JOIN games g ON g.id = ug.game_id
+    WHERE ug.user_id = %s
+    ORDER BY g.name ASC
+    """
+    mycursor.execute(getQuery, (userph_id,))
+    games = mycursor.fetchall()
+    mycursor.close()
+    return games
+
+async def get_channels_by_user_id(myphBD: DatabaseConnection, userph_id: int):
+    mydbConnection = await myphBD.get_db_connection()
+    mycursor = mydbConnection.cursor(dictionary=True)
+    getQuery = """
+    SELECT c.id, c.name
+    FROM user_channels uc
+    JOIN channels c ON c.id = uc.channel_id
+    WHERE uc.user_id = %s
+    ORDER BY c.name ASC
+    """
+    mycursor.execute(getQuery, (userph_id,))
+    channels = mycursor.fetchall()
+    mycursor.close()
+    return channels
+
 async def insert_users(myphBD: DatabaseConnection, usuario: User):
     mydbConnection = await myphBD.get_db_connection()
     mycursor = mydbConnection.cursor()

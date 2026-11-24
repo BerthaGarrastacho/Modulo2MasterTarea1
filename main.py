@@ -1,28 +1,32 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
-
 from config.connections import DatabaseConnection
 from services.users import users
 from services.games import games
 from services.channels import channel
-
 import os
 
 app= FastAPI()
 app.title = "API de Gestion de Usuarios y sus preferencias en Twitch"
-app.version = "0.0.4"
+app.version = "0.0.5"
 
-myphBD = DatabaseConnection( host="localhost", user="mysql", password="admin", database="user-ph")
+# La conexión toma sus datos del archivo .env (ver .env.template)
+myphBD = DatabaseConnection()
 
 #CRUD GET HOME CLEAN ARCH
 @app.get('/', tags=['Home'])
 def get_Home():
     return users.get_Home()
 
-#CRUD GET USER CLEAN ARCH -  devyelde todos los usuarios con su estrcutura completa
+#CRUD GET USERS CLEAN ARCH -  devuelve todos los usuarios con su estrcutura completa
 @app.get('/users', tags=['users'], status_code=200)
 async def getUsers():
     return await users.getUsers(myphBD)
+
+#CRUD GET USER BY ID CLEAN ARCH -  devuelve un usuario por su ID con su estrcutura completa
+@app.get('/user/{userph_id}', tags=['users'], status_code=200)
+async def getUserByID(userph_id: int):
+    return await users.get_user_by_id(userph_id, myphBD)
 
 #CRUD POST USER CLEAN ARCH -  agrea un nuevo usuario
 @app.post('/users', tags=['users'], status_code=201)

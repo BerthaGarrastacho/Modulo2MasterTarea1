@@ -1,4 +1,3 @@
-import asyncio
 import os
 from pathlib import Path
 
@@ -15,7 +14,6 @@ async def get_id_category(name: str, twitch: Twitch):
     async for cat in twitch.search_categories(name, first=1):
         return cat.id
     return None
-# llamada buscar la categoria y devuelve un obj de la que hay que sacar el id
 
 async def get_top_stream_in_category(id_cat: str, twitch: Twitch):
     streams = []
@@ -27,10 +25,25 @@ async def get_top_stream_in_category(id_cat: str, twitch: Twitch):
 
 async def get_top_streams_in_game(game: str):
     twitch = await Twitch(CLIENT_ID, CLIENT_SECRET)
-    category_id = await get_id_category(game, twitch) 
-    streams = await get_top_stream_in_category(category_id, twitch)
-    await twitch.close()
-    return streams
+    try:
+        category_id = await get_id_category(game, twitch)
+        if category_id is None:
+            return []
+
+        streams = await get_top_stream_in_category(category_id, twitch)
+        return [
+            {
+                "user_name": s.user_name,
+                "title": s.title,
+                "game_name": s.game_name,
+                "viewer_count": s.viewer_count,
+                "started_at": s.started_at.isoformat(),
+                "language": s.language,
+            }
+            for s in streams
+        ]
+    finally:
+        await twitch.close()
 
 async def get_top_channels_on_live(logins: list[str]):
     live = []
@@ -49,28 +62,3 @@ async def get_top_channels_on_live(logins: list[str]):
             })
     await twitch_client.close()
     return live
-
-async def main():
-    twitch = await Twitch(CLIENT_ID, CLIENT_SECRET)  
-
-    print("Top categories:")
-    async for game in twitch.get_top_games(first=10):
-        print(game.id, game.name)
-
-    print("Search 'mine':")
-    async for cat in twitch.search_categories("mine", first=5):
-        print(cat.id, cat.name)
-
-    print("By exact name:")
-    async for game in twitch.get_games(names=["Minecraft", "Just Chatting"]):
-        print(game.id, game.name)
-
-    print("Top live streams in Just Chatting:")
-    async for s in twitch.get_streams(game_id=["509658"], first=5):
-        print(s.user_name, s.viewer_count)
-
-
-    await twitch.close()
-
-if __name__ == "__main__":
-    asyncio.run(main())

@@ -512,27 +512,13 @@ Las pruebas principales se realizan manualmente desde Postman.
 
 ### 8.3. Problemas y limitaciones
 
-- **Problema: configuración de credenciales**
-  - **Descripción:** Las credenciales y el puerto deben coincidir entre `.env`, Docker Compose y MySQL.
-  - **Impacto:** Una diferencia produce errores de acceso o tiempo de espera.
-  - **Posible solución:** Mantener una plantilla `.env.template` completa y validar la conexión al iniciar.
-
-- **Problema: resultados de Twitch**
-  - **Descripción:** Si un juego no existe en Twitch, `get_id_category()` devuelve `None` y la búsqueda de streams falla. Además, los objetos de `twitchAPI` pueden no ser serializables a JSON.
-  - **Impacto:** La respuesta puede fallar con error 500.
-  - **Posible solución:** Validar la categoría antes de buscar streams y convertir cada stream a un diccionario con los campos necesarios.
-(CORREGIR)
 - **Problema: lista vacía en `POST /users/{user_id}/games`**
   - **Descripción:** La ruta no valida que `games` tenga elementos ni que el usuario y los juegos existan.
   - **Impacto:** Puede responder con error de base de datos o insertar filas con identificadores inválidos.
   - **Posible solución:** Validar la lista con un 400 y comprobar la existencia de los identificadores.
 (CORREGIR)
-- **Problema: credenciales de MySQL en el código**
-  - **Descripción:** `main.py` tiene el usuario y la contraseña de MySQL escritos directamente.
-  - **Impacto:** Las credenciales quedan en el control de versiones.
-  - **Posible solución:** Leerlas desde `.env` con `os.getenv`.
-(CORREGIR)
 
+(CORREGIR)
 - **Problema: nombres de canales frente a logins de Twitch**
   - **Descripción:** Twitch identifica los canales por su login en minúsculas. Un nombre con caracteres no latinos o diferente al login no encuentra el canal.
   - **Impacto:** Un canal favorito puede no aparecer en `ONLIVE` aunque esté en vivo.
@@ -601,6 +587,22 @@ El proyecto cumple el objetivo principal de administrar datos de usuarios median
 - [Documentación de twitchAPI](https://twitchapi.readthedocs.io/)
 - [Documentación de la API de Twitch](https://dev.twitch.tv/docs/api/)
 
+---
+
+## 13. Declaración de uso de herramientas de IA
+
+Este proyecto se desarrolló con apoyo de un asistente de IA (Claude, de Anthropic), utilizado desde Claude Code en la terminal.
+
+**Para qué se utilizó:**
+- Proponer refactorizaciones, como la separación en servicios y la consulta de canales en vivo por lotes.
+- Redactar y actualizar esta documentación, incluidas las tablas de endpoints, el modelo de datos y los problemas conocidos.
+- Generar scripts SQL para cargar datos de canales.
+- Consultar fuentes públicas para obtener información de empleo y uso de Twitch.
+
+**Límites de la verificación:**
+- La lista de canales populares se obtuvo de una tabla pública de Wikipedia y de los streams en vivo del momento de la consulta. No representa un ranking oficial de Twitch.
+
+**Responsabilidad:** la autora es responsable del contenido, del comportamiento del código y de la documentación entregada.
 ---
 
 **Última actualización:** 24/11/2026

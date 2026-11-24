@@ -71,7 +71,7 @@ def get_Home():
         """
     )
 
-#CRUD GET USER Logic
+#CRUD GET USERS Logic
 async def getUsers(myphBD: DatabaseConnection): 
     users_with_games = await database.get_user_with_games(myphBD)
     users_with_channels = await database.get_user_with_channels(myphBD)
@@ -93,7 +93,24 @@ async def getUsers(myphBD: DatabaseConnection):
             usuarios[row["id"]]["channels"].append({"id": row["channel_id"], "name": row["channel_name"]})
 
     return list(usuarios.values())
- 
+
+#CRUD GET USER BY ID Logic
+async def get_user_by_id(userph_id: int, myphBD: DatabaseConnection):
+    user = await database.find_user_by_id(myphBD, userph_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="user no encontrado")
+
+    games = await database.get_games_by_user_id(myphBD, userph_id)
+    channels = await database.get_channels_by_user_id(myphBD, userph_id)
+    return {
+        "id": user["id"],
+        "name": user["name"],
+        "username": user["username"],
+        "email": user["email"],
+        "games": [{"id": g["id"], "name": g["name"]} for g in games],
+        "channels": [{"id": c["id"], "name": c["name"]} for c in channels],
+    }
+
 #CRUD POST USER Logic    
 async def postUser(myphBD: DatabaseConnection, request: Request):
     usuario: User = await request.json()
