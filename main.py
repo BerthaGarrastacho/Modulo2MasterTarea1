@@ -30,7 +30,7 @@ async def postUser(request: Request):
     return await users.postUser(myphBD, request)
 
 #CRUD PUT USER CLEAN ARCH -  actualiza datos de un usuario (name, email, username)
-@app.put('/users/{userph_id}', tags=['users'], status_code=200)
+@app.put('/user/{userph_id}', tags=['users'], status_code=200)
 async def updateUser(userph_id: int, request: Request):
     return await users.updateUser(userph_id, myphBD, request)
 
